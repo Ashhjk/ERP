@@ -15,3 +15,69 @@ eg of ERP:
 3.Infor
 
 SAP is an erp produced by the company SAP.
+
+________ABAP(Advanced Business Application Programming)_______
+*its a high level programming language created by sap which help companies in customising the sap erp.
+*Abap allows companies in customising the workflow ofvarious sap modules like financial accounting ,asset management, material management etc.
+*it was developed by sap for writing sap applications 
+*sap aaplications like S/4HANA ,ECC,Crm etc are created using the ABAP programming language.
+*But some of the sap applications like SuccessFactors,Ariba,Concur,FieldGlass ,BTP etc are cloud SAPs..means they are not written using the ABAP..instead they are written using java , nodejs etc
+
+____________________SAP ABAP PLATFORM FUNDAMENTALS__________________
+**************different types of sap software applications****************
+1.APPLICATION SOFTWARE
+SAP ERP,SAP S/4 HANA : end to end application covering all the business processes
+2.REPORTS AND ANALYTICS
+tools that help in providing business analytics and reports
+3.MOBILE ACCESS
+eg: SAP FIORI they are the mobile applications so that the sap applications can be accessed anywhere
+4.DBMS
+eg:SAP HANA saps 
+primary dbms is sap hana
+5.CLOUD SOLUTIONS
+Delivery of SAP solutions over the cloud, eliminating the need for on-premises infrastructure.
+Includes SAP Business Technology Platform (BTP), SAP HANA Cloud, and SAP SuccessFactors.
+
+*****SAP S/4HANA is next gen erp of sap...it allows the flow of information between various business f
+unctions
+
+******************HISTORY OF SAP's ERP***************
+R2-> R3(business suite or ECC)-> Business Bydesign ->S/4 HANA
+
+_____________SAP's 3 TIERED ARCHITECTURE______________
+consist of three layers
+1.presentation layer(web browser-sap fiori,business client,sap GUI)
+2.Application layer
+3.database layer (ABAP- SAP HANA database)
+
+*Application and database layers can run on same hosts but possible only in case of smaller businesses ...for larger businesses both run on different hosts
+     **********Database layer*********
+SAP HANA database is used...while installing and running the sap application databases are created by default
+*Application layer consist of numerous objects and logics
+*presentation layer is available to the end user
+_____________APPLICATION LAYER___________
+ABAP platform is the application layer
+*It includes various business processses like finance ,sales etc and also custom applications everything resides here
+*Advanced Business Application Programming (ABAP) is the programming language that is used to build custom applications for the application layer
+**********ABAP PLATFORM FUNCTIONS************
+1.act as an application run time environment
+2.act as a application development environment
+3.used to build custom appplications
+4.used for integration and data management platform
+5.security platform6.reposting platform
+
+   ========> Application run time environment
+act as the middle tier between the presentation and the databse layer
+*ABAP based application are run on this platform
+*it provides a secure platform
+*application processing,troubleshooting and optimisation 
+   ========> Application development environment
+*helps to build responsive  applications using SAP UI5 for frontend and WebDinpro ABAP
+   ========>Built in source management system
+* custom code respository is there developed by sap...many developers can contribute to it at the same time and work on it simultaneously
+*conflict resolution also ther like git 
+   ========> Integration tools
+*there are many integration tools  for ensuring coonrcativity btw different tools and applications 
+*Remote Function Call Protocol(RFC) is one such integration tool...by using this functions can be  called in remote applications or even non sap systems
+*Business Application Programming Interface(BAPI) connect between other external applications
+*data integration converts the data from one form to another
