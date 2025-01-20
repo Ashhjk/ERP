@@ -64,20 +64,47 @@ ABAP platform is the application layer
 2.act as a application development environment
 3.used to build custom appplications
 4.used for integration and data management platform
-5.security platform6.reposting platform
+5.security platform
+6.reporting platform
 
    ========> Application run time environment
 act as the middle tier between the presentation and the databse layer
 *ABAP based application are run on this platform
 *it provides a secure platform
 *application processing,troubleshooting and optimisation 
+
    ========> Application development environment
 *helps to build responsive  applications using SAP UI5 for frontend and WebDinpro ABAP
+
    ========>Built in source management system
 * custom code respository is there developed by sap...many developers can contribute to it at the same time and work on it simultaneously
 *conflict resolution also ther like git 
+
    ========> Integration tools
 *there are many integration tools  for ensuring coonrcativity btw different tools and applications 
 *Remote Function Call Protocol(RFC) is one such integration tool...by using this functions can be  called in remote applications or even non sap systems
 *Business Application Programming Interface(BAPI) connect between other external applications
 *data integration converts the data from one form to another
+
+   ========>Application security
+using authentication to protect the application
+   =========>Reports
+get reports and analyses very easily
+*ABAP LIST VIEWER(ALV) is one tool for creating aesthetic reports  in that we can sort and filter
+*SAP crystal reports also a  tool supports advanced features like charting and advanced formulas
+
+For each sap system there is a unique system id called SID.
+Its alphanumeric
+Start with uppercase
+Only 3 letters
+
+___________________SAP INSTANCE________________
+we can think it as a work unit inside the sap system..they are doing specific jobs and services
+*each sap instance run on a host..
+*many instances can be run on the same host provided each of the instnaces should have unique SID and also a 2 digit instance number to uniquely identify the instance.
+Types of Instances:
+
+    Primary Application Server (PAS): The first instance created during installation. It’s the main worker for running the SAP system.
+    Additional Application Server (AAS): Extra instances added to share the workload and handle more users or tasks.
+    ABAP Central Services Instance (ASCS): A special instance that handles centralized services like communication and synchronization between other instances.
+
