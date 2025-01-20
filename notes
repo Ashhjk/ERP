@@ -108,3 +108,12 @@ Types of Instances:
     Additional Application Server (AAS): Extra instances added to share the workload and handle more users or tasks.
     ABAP Central Services Instance (ASCS): A special instance that handles centralized services like communication and synchronization between other instances.
 
+*Application layer consist of so many application instances and one instace for central services.
+*the primary appllication server or instance is used at the time of installation
+*every instance has a DISPATCHER
+*each instance can be mapped to particular id
+*dispatcher manages the processes and ensures workload is evenly distributed
+*dispatcher checks the health of the processes and start or stop a process if necessaaary
+
+____________Functions of Dispatcher___________
+
