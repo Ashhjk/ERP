@@ -115,5 +115,39 @@ Types of Instances:
 *dispatcher manages the processes and ensures workload is evenly distributed
 *dispatcher checks the health of the processes and start or stop a process if necessaaary
 
-____________Functions of Dispatcher___________
+______________WORK PROCESSES OF A DISPATCHER_________________
+1. Dialog work process
+whenever the user makes a request for some resources the dialog work process does this
+*it executes the request ,get the data from the db and give it to the user
+*manages the allocation of resources like memory and cpu so that multiple requests can be handled simultaneously
 
+2.Batch work process
+to perform background tasks 
+*report generation
+*non interactive process not interating with the users
+*executes long running tasks
+*helps in job scheduling so that the users can set to run the most important tasks first
+
+3.Spool work process
+*its used for printing
+*when someone generates the spool request the request is stored in the database and then generate the output request for print devices
+
+4. Update work process
+*it manages an update queue
+*when an sap process is completed it is the update request that updates the db
+
+there are many application server instances in the application layer also there are centrak services etc
+
+________________ABAP APPLICATION PROCESSING STEPS___________________
+
+1. when a user logs on to the SAP system they the SAP GUI (user interface ) puts a request into the message server in the application layer.
+2. then it looks for the application server with the most available resources.
+3. on finding the  available application server the message server sends the message to the GUI to connect to the dispatcher of that particular server
+4.then the connection from the message server is terminated and now connected to the application server
+5.authentication request including the users credentials is passed to the AS
+6. users request is put in wait queue
+7. its managed in first in first out basis
+8. when its right time the request is given to dialog work process of dispatcher because the users request is an interactive process
+eg:suppose a user want to log in to the sap system then the task handler in the dispatcher sends checks the application program buffer for the data
+and then load the data from the database and bring it to the dialog work process and store it in the memory
+*if the user is login for the first time then his credentials wont be in the buffer...so they task handler looks for the data in the database and fulfills the request
