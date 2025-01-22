@@ -151,3 +151,169 @@ ________________ABAP APPLICATION PROCESSING STEPS___________________
 eg:suppose a user want to log in to the sap system then the task handler in the dispatcher sends checks the application program buffer for the data
 and then load the data from the database and bring it to the dialog work process and store it in the memory
 *if the user is login for the first time then his credentials wont be in the buffer...so they task handler looks for the data in the database and fulfills the request
+
+_________________INTERNET COMMUNICATION MANAGER________________
+INTERNET COMMUNICATION Manager assisgns the incoming https requests to the application server and the dispatcher based on looking the load and the schedule so that no application server is over;loaded
+_________________SAP web dispatcher____________
+What is the SAP Web Dispatcher?
+
+    It’s like a traffic controller for web requests.
+    When a user accesses an SAP system from a browser, the request first goes to the Web Dispatcher, which decides where to send it within the SAP environment.
+
+What does it do?
+
+    Gateway and Load Balancer:
+        It acts as the single point of entry for all user requests.
+        Balances the workload by distributing requests to different servers in the SAP system, ensuring none are overloaded.
+
+    Security:
+        It acts as a reverse proxy, meaning it hides the internal structure of the SAP systems from external users.
+        Filters and modifies requests to ensure only valid ones are forwarded to SAP systems.
+
+    Request Routing:
+        Decides where to send each request based on rules, such as the host, port, or specific URL paths.
+
+    Scalability:
+        Handles large amounts of traffic and supports complex enterprise systems with multiple users and servers.
+
+    Single Sign-On (SSO):
+        Allows users to log in once and access multiple SAP systems without having to log in again for each one.
+
+    Optimization:
+        Handles tasks like SSL termination (encrypting and decrypting communication), caching data, and compressing content to improve speed.
+
+How it Works:
+
+    A user accesses an SAP application using a browser.
+    The request is sent to the SAP Web Dispatcher.
+    The Web Dispatcher:
+        Checks rules to decide which back-end server should handle the request.
+        Balances the load between servers to avoid overloading any single server.
+        Sends the request to the chosen server for processing.
+    The processed response is sent back to the user through the Web Dispatcher.
+*Till now we have seen the user login request, now we can see how a transaction is processed..transaction means some kind of request from the user
+
+______________________TRANSACTION PROCESSING____________________
+1. processing a dialog request
+2.definingan ABAP transaction
+3.database interaction
+4.Lock managemnet
+5. update processing
+
+ =====> Processing a dialogue request
+Processing a Dialog Request in SAP
+
+When a user interacts with an SAP application, the system follows a structured approach to handle their input and provide a response. Here’s a simplified explanation:
+Key Concepts:
+
+    Dialog Work Processes:
+        These are the components on the application server that handle user requests.
+        When a user performs an action (e.g., clicking a button or entering data), the dialog work process executes a corresponding dialog step.
+
+    Dialog Steps:
+        Each user action (e.g., clicking, submitting) is a dialog step, which involves processing logic, retrieving/manipulating data, and sending a response.
+        These steps are small tasks, and multiple dialog steps can occur in a single transaction.
+        Different dialog steps for the same user may be processed by different work processes. This is called work process multiplexing.
+
+    Dynpros (Dynamic Programs):
+        SAP screens are called dynpros, consisting of:
+            Screen image: What the user sees.
+            Flow logic: The rules defining how the screen behaves and interacts with data.
+
+    PBO and PAI:
+        Each screen follows two key stages:
+            PBO (Process Before Output): Prepares the screen and its data before it’s displayed to the user.
+            PAI (Process After Input): Processes user inputs after the user interacts with the screen.
+
+How It Works:
+
+    User Action:
+    The user interacts with the system (e.g., enters data and clicks a button).
+
+    Processing by the Dynpro Processor:
+        The dynpro processor handles the screen logic and:
+            Executes the PBO step to prepare the screen and data.
+            Sends the screen to the user.
+
+    User Interaction with Screen:
+        The user interacts with the screen (e.g., entering values or pressing a button).
+        The system triggers the PAI step, which processes the user input.
+
+    ABAP Processor Execution:
+        Based on the screen flow logic, the ABAP processor executes the required code or subprogram.
+        If database access is needed, the database interface of the dialog work process handles it.
+
+    Response to User:
+        Once the processing is complete, a response is sent to the user (e.g., updated data or a new screen).
+
+Example Scenario:
+
+    A user opens a screen to update their contact information.
+    The PBO step retrieves the current contact details and displays them on the screen.
+    The user modifies their phone number and clicks “Save.”
+    The PAI step processes the user input, validates the data, and updates the database.
+    The system confirms the update and sends a success message back to the user.
+________________Defining an SAP Transaction________________
+
+An SAP transaction is typically made up of multiple dialog steps. These dialog steps, or processing units, are grouped together to generate a specific business result. For example, the creation of a financial document or a sales order. A transaction must satisfy the ACID test and is characterized by the following four attributes:
+
+    Atomic: Atomic means that a transaction is either fully successful or does not have any effects at all. If a transaction-oriented system goes down, you need to ensure that inconsistent, partial results are not stored.
+    Consistent: Consistent means that the system status changes from one that is accurate and consistent in business terms to another that is also accurate and consistent in business terms.
+    Isolated: Isolated means that the changes made within a transaction can only be seen by other transactions, even those that run simultaneously, after the final confirmation (Commit).
+    Durable: The results of a transaction are durable because after the final confirmation they are stored permanently in the database.
+
+_____________ECLIPSE IDE____________
+ABAP perspective
+F1 - help about statement
+F2- definition of statement
+F3- definition of object
+
+*we create development object in abap environment
+*then on creation of these objects they are put under the package 
+*this set of components is called repository object
+*we first develop then test the components and later transport it to production after all these testing works
+
+
+_______________Allowed in ABAP Class Names___________
+
+    Letters (A-Z, a-z)
+        Both uppercase and lowercase letters are allowed, but class names are case-insensitive in ABAP. Typically, uppercase is used by convention.
+
+    Digits (0-9)
+        Numbers can be included in the class name, but they cannot be the first character.
+
+    Underscore (_)
+        Underscores can be used within the class name to separate words or identifiers. For example, ZCL_MY_CLASS.
+
+    Length
+        The maximum length of an ABAP class name is 30 characters.
+
+    Prefixing with Z or Y (for custom objects)
+        Custom class names must begin with Z or Y to distinguish them from SAP standard classes.
+
+Not Allowed in ABAP Class Names
+
+    Special Characters
+        Characters like $, %, &, #, @, etc., are not allowed.
+
+    Spaces
+        Class names cannot contain spaces.
+
+    Starting with a Digit
+        The name cannot begin with a number (e.g., 1CL_MYCLASS is invalid).
+
+    Reserved Words
+        Names that match reserved keywords in ABAP are not allowed.
+
+    SAP Standard Namespace
+        Names that do not start with Z or Y are reserved for SAP standard objects. Creating custom classes without these prefixes can lead to conflicts.
+
+Naming Conventions
+
+    General Structure:
+    ZCL_ + descriptive name, e.g., ZCL_ORDER_MANAGEMENT.
+
+    Purpose-Specific Prefixes:
+        ZCL_ for classes
+        ZIF_ for interfaces
+        ZCX_ for exceptions
