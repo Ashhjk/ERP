@@ -317,3 +317,104 @@ Naming Conventions
         ZCL_ for classes
         ZIF_ for interfaces
         ZCX_ for exceptions
+
+_____________SYNTAX OF ABAP______________
+1.start with a keyword
+2.end with a perios (.)
+3.not case sensitive usually keywords caps and identifiers lower case or camel case
+4.all data objects have static type
+5. have built in db ...sql for queries and entity anipuoation language for modifications
+
+___________EXAMPLES OF ABAP STATEMENTS____________
+1.DECLARATIVE STATEMENTS
+    used to declare a variable
+eg:DATA name TYPE c LENGTH 10.        // keywords DATA, TYPE,LENGTH are in caps as they are keywords and the                                           rest are in lowecase as they are identifiers
+    DATA text TYPE string.
+2.EXECUTABLE STATEMENTS
+    CONCATENATE 'Hello' name INTO text.
+
+____________EXAMPLES OF ABAP EXPRESSIONS____________
+ 1.literal
+    text ='Hello'.
+2.variable
+    text=name.
+3.function
+    text=replace( val='Hello world'
+                sub='world'
+                with='name'.)
+4.conditional assignment
+    text=COND#(WHEN text='' THEN Hello && name ELSE text).
+
+__________________________COMMENTS  IN ABAP________________________
+for commentinng aline u can include * in the first coloumn   
+    *comment.....
+for commenting in between we can use "
+     text=name.  "comment.....
+for commenting many lines  select those lines and ctrl+<
+
+_______________DATA OBJECTS IN ABAP_____________
+1.VARIABLES
+    *its value can be changed any time
+    *it has a  name
+    *using the name it can be called any time 
+2.CONSTANTS
+    *its value is set by hardcoding
+    *it has a name
+    *can be called anywhere in the program
+3.LITERALS
+    *its value can  be set only one time
+    *no name
+    *cant access it again 
+
+_______________DECLARATION OF VARIABLES_______________
+
+DATA <variable name> TYPE <datatype> VALUE<starting value>
+eg:
+    DATA my_variable1 TYPE i.
+    DATA my_variable1 TYPE string.
+    DATA my_variable1 TYPE string VALUE='hello world'. 
+
+======>DATA
+    keyword data is used before the variable name 
+    variable name  can be max 30 characters
+    it can have digits alphabets or underscore
+    can start with alphabet or underscore
+======>TYPE
+    TYPE keyword is followed by the datatype of the variable
+    i for integer
+    string
+======>VALUE
+    value is optional 
+
+EXAMPLE OF USING DATATYPE
+
+======>string
+CLASS zcl_data_types1 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_data_types1 IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+  DATA x TYPE string.
+  out->write( 'this variable is a string' ).
+  ENDMETHOD.
+ENDCLASS.
+
+=======>integer
+  METHOD if_oo_adt_classrun~main.
+    DATA x TYPE i.
+    x = 42.
+    out->write( |{ x }| ).
+  ENDMETHOD.
