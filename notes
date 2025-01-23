@@ -386,9 +386,9 @@ eg:
 ======>VALUE
     value is optional 
 
-EXAMPLE OF USING DATATYPE
+_____________EXAMPLE OF USING DATATYPE______________
 
-======>string
+======>STRING
 CLASS zcl_data_types1 DEFINITION
   PUBLIC
   FINAL
@@ -412,9 +412,49 @@ CLASS zcl_data_types1 IMPLEMENTATION.
   ENDMETHOD.
 ENDCLASS.
 
-=======>integer
+=======>INTEGER
   METHOD if_oo_adt_classrun~main.
     DATA x TYPE i.
     x = 42.
     out->write( |{ x }| ).
   ENDMETHOD.
+=======>DATES
+dates are usually written in yyyymmdd format .
+*we can format the date into particular format using the predefined user format for date
+*we can also extract the year moth and date from that particular date
+
+  METHOD if_oo_adt_classrun~main.
+    DATA birthday TYPE d.
+    DATA year TYPE n LENGTH 4.
+    DATA month TYPE n LENGTH 2.
+    DATA day TYPE n LENGTH 2.
+    DATA formatted_date TYPE string.
+
+    birthday = '20120615'.
+
+    formatted_date = |{ birthday DATE = USER }|.
+
+    year = birthday+0(4).
+    month = birthday+4(2).
+    day = birthday+6(2).
+
+    out->write( |{ formatted_date }| ).
+    out->write( |Birthyear is: { year }| ).
+    out->write( |Month is:{ month }| ).
+    out->write( |Day is:{ day }| ).
+  ENDMETHOD.
+
+
+------->output
+
+
+06/15/2012
+Birthyear is: 2012
+Month is:06
+Day is:15
+
+
+*usually indexing start from 0.
+*year = birthday+0(4). //birthday + start index (number of                     characters to be extracted)
+*month = birthday+4(2).// here indexing start from 4 so that 0,1,2,3 is the year and 4,5 give the month
+*day = birthday+6(2). //here indexing start from 6 so that 6,7 gives the day
