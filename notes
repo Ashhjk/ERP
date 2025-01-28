@@ -653,8 +653,8 @@ ______________FORMAT OPTIONS DATE _______________
 
       METHOD if_oo_adt_classrun~main.
       DATA date TYPE d VALUE '19870923'.
-      out->write( |{ date }| ).
-      out->write( |{ date DATE = ISO }| ).
+      out->write( |{ date }| ).    //when we give variable inside the curly bracket(embedded expression inside string) then it is considered as string
+      out->write( |{ date DATE = ISO }| ).   //when we format it using the DATE =<date_format>  here ISO which is international standard and its in yyyy-mm-dd format
       out->write( |{ date DATE = USER }| ).
       ENDMETHOD.
 
@@ -681,3 +681,253 @@ _____________FORMATTING NUMBER__________
 -273.67
 -2.7367E+02
 273.67-
+______________&& OPERATOR_____________
+
+      METHOD if_oo_adt_classrun~main.
+      DATA result1 TYPE string.
+      DATA result2 TYPE string.
+      DATA part1 TYPE string VALUE 'Welcome'.
+      DATA part2 TYPE string VALUE 'to'.
+      DATA part3 TYPE string VALUE 'Eclipse'.
+      result1 = part1 && part2 && part3.
+      result2 = part1 && | | && part2 && | | && part3.   //WE HAVE TO LEAVE AN EMPTY SPACE IN BETWEEN THE STRING BRACKETS
+    
+      out->write( |{ result1 }| ).
+      out->write( |{ result2 }| ).
+      ENDMETHOD.
+
+------>OUTPUT
+
+WelcometoEclipse
+Welcome to Eclipse
+
+
+         METHOD if_oo_adt_classrun~main.
+        
+        * Declarations
+        **********************************************************************
+            TYPES t_amount TYPE  p LENGTH 8 DECIMALS 2.
+        
+            DATA amount   TYPE t_amount VALUE '353676767787.839'.
+            DATA amount1  TYPE t_amount VALUE '1.20'.
+            DATA amount2  TYPE t_amount VALUE '2.10'.
+        
+            out->write( |{ amount }| ).
+            out->write( |{ amount1 }| ).
+            out->write( |{ amount2 }| ).
+        
+            DATA(text) = 'Hello World'.
+            DATA(text1) = | Total: { amount } INR |.
+            DATA(string) = 'Hello World'.
+            out->write( text ).
+            out->write( text1 ).
+            out->write( string ).
+        
+        
+         ENDMETHOD.
+
+------->OUTPUT
+
+353676767787.84
+1.20
+2.10
+Hello World
+ Total: 353676767787.84 INR 
+Hello World
+
+
+_____________ADD TWO NUMBERS____________
+
+          METHOD if_oo_adt_classrun~main.
+          DATA number1 TYPE i.
+          DATA number2 TYPE i.
+          number1 = 3.
+          number2 = -8.
+        
+          out->write( |{ number1 + number2 }| ).
+          ENDMETHOD.
+
+----->OUTPUT
+-5
+
+______________RATIO OF TWO NUMBERS_____________
+      METHOD if_oo_adt_classrun~main.
+      DATA number1 TYPE i VALUE 40.
+      DATA number2 TYPE i VALUE 5.
+      DATA(result) = number1 / number2.
+      out->write( result ).
+      ENDMETHOD.
+----->OUTPUT
+8
+
+____________________CONDITIONAL EXPRESSIONS_______________
+
+ 1.IF ......ELSEIF....ELSE.....ENDIF.
+
+          DATA num TYPE i VALUE 2.
+          IF num = 1.
+          out->write( num ).
+          ELSEIF num = 2.
+          out->write( |num is 2| ).
+          ELSE.
+          out->write( 'num is not 0' ).
+          ENDIF.
+          ENDMETHOD.
+Here If condition and end if is mandatory ...else and else if are not mandatory
+*if there is no else if then it wont check any other options
+*if there is not else statement then one or no statement will be executed.
+*ternary operator (.) is needed after every statement
+
+    1.comparison operators
+    2.logical operators
+    3.sequence of evaluation
+    4.special expressions
+
+====>IS INITIAL(special expressions)
+
+if the variable is set to the initial value then the statement is executed
+                  METHOD if_oo_adt_classrun~main.
+                  DATA num TYPE i.
+                  num = 9.
+                  IF num IS INITIAL.
+                  out->write('num is initialised to 0' ).
+                  ENDIF.
+                  IF num IS NOT INITIAL.
+                  out->write( 'num is not initialised to 0' ).
+                  ENDIF.
+                
+                  DATA num1 TYPE n LENGTH 3.
+                  num1 = 987.
+                  IF num1 IS INITIAL.
+                  out->write( |num1 is correctly initialised| ).
+                  ELSE.
+                  out->write( |num1 is not correctly initialised| ).
+                  ENDIF.
+                
+                  ENDMETHOD.
+2.CASE.......WHEN....WHEN OTHERS.....ENDCASE
+                  DATA number TYPE i VALUE 8.
+                  CASE number.
+                  WHEN 1.
+                  out->write( |number is 1| ).
+                  WHEN 2.
+                    out->write( |number is 2| ).
+                  WHEN OTHERS.
+                  out->write( |number is not any of the above| ).
+                  ENDCASE.
+                
+                  ENDMETHOD.
+
+____________________EXCEPTIONS___________________
+errors encountered during the execution of ABAP program
+Based on who raises the exception its called System exception and Application Exception
+
+1. SYSTEM EXCEPTION
+2.APPLICATION EXCEPTION
+
+****EXAMPLES OF RUNTIME EXCEPTIONS
+1.division by 0
+2.string assigned to integer
+
+___________HOW TO HANDLE THESE EXCEPTIONS______________
+
+we have to handle these exceptions from the program itself using  TRY..CATCH...CATCH...ENDTRY
+
+EXAMPLE 1(division by zero)
+
+          METHOD if_oo_adt_classrun~main.
+          DATA numerator TYPE i VALUE 6.
+          DATA denominator TYPE i VALUE 2.
+          DATA result TYPE i.
+        
+          TRY.
+          result = numerator / denominator.
+          out->write( result ).
+          CATCH cx_sy_zerodivide.
+            out->write( | not possible | ).
+          ENDTRY.
+          out->write( 'end of the demo' ).
+          ENDMETHOD.
+
+----->output
+3            
+end of the demo
+
+EXAMPLE 2(Type mismatch )
+            METHOD if_oo_adt_classrun~main.
+              DATA result1 TYPE i.
+              DATA str TYPE string VALUE 'ABC'.
+            
+              TRY.
+              result1 = str.
+              out->write( |result1| ).
+              CATCH cx_sy_conversion_no_number.
+              out->write( |string cannot be assigned to integer| ).
+              ENDTRY.
+
+-------->output
+string cannot be assigned to integer
+
+EXAMPLE 3( accessing a row which is not present in internal table)
+
+         METHOD if_oo_adt_classrun~main.
+          DATA table1 TYPE TABLE OF i.
+          DATA index TYPE i VALUE 2.
+          DATA result2 TYPE i.
+          APPEND 10 TO table1.
+        
+          TRY.
+          result2 = table1[ index ].
+          out->write( result2 ).
+          CATCH cx_sy_itab_line_not_found.
+          out->write( |row does not exist in table | ).
+        
+          ENDTRY.
+
+------>output
+
+row does not exist in table 
+
+________________________ITERATIONS__________________
+used to execute something n number of times 
+1. DO...........ENDDO
+
+>>>>>>>>>> specified  number of iterations
+
+DO <integer expression> TIMES.
+  <statement>
+ENDDO.
+
+          METHOD if_oo_adt_classrun~main.
+          DATA count TYPE i VALUE 5.
+          DO count TIMES.
+             out->write( 'HAI' ).
+          ENDDO.
+          ENDMETHOD.
+
+>>>>>>>>>> Abort condiion in DO.....ENDDO
+         DATA c_num TYPE i VALUE 3.
+          DATA number TYPE i.
+        
+          number = c_num * c_num.
+        
+          DO.
+          out->write( |{ sy-index }. Value of number : { number }| ).
+          number = number - 1.
+            IF number <= c_num.
+              EXIT.
+            ENDIF.
+          ENDDO.
+
+-------->output:
+
+1. Value of number : 9
+2. Value of number : 8
+3. Value of number : 7
+4. Value of number : 6
+5. Value of number : 5
+6. Value of number : 4
+
+*sy-index gets the current iteration number
+
+______________
