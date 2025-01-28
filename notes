@@ -453,8 +453,231 @@ Birthyear is: 2012
 Month is:06
 Day is:15
 
-
 *usually indexing start from 0.
 *year = birthday+0(4). //birthday + start index (number of                     characters to be extracted)
 *month = birthday+4(2).// here indexing start from 4 so that 0,1,2,3 is the year and 4,5 give the month
 *day = birthday+6(2). //here indexing start from 6 so that 6,7 gives the day
+
+======>CHARACTER
+*character dentoted by c we can also fix the length to set the maximum size
+*character can have alphabets ,numbers or symbols
+
+  METHOD if_oo_adt_classrun~main.
+    DATA var TYPE c LENGTH 10.
+
+    var = 'Ab3nb,$f'.
+
+    out->write( |Variable is:{ var }| ).
+  ENDMETHOD.
+=======>NUMERIC TEXT
+
+    *it can hold numerci values as a text
+    *if we fix a length for them then it is padded with zeros to maintain that length
+    
+METHOD if_oo_adt_classrun~main.
+    DATA var TYPE n LENGTH 10.
+
+    var = '67854'.
+
+    out->write( |Variable is:{ var }| ).
+  ENDMETHOD.
+
+------>OUTPUT
+Variable is:0000067854
+
+======>PACKED DECIMAL
+ METHOD if_oo_adt_classrun~main.
+    DATA var TYPE p LENGTH 8 DECIMALS 2.
+    var = 1234783456789.
+    out->write( |Variable is:{ var }| ).
+  ENDMETHOD.
+
+*length 8 means each byte can store two gits ...so total number of digits that can be stored is 2*length-1
+=> 2 *8 -1=15...so 15 digits are possible and one positive or negative sign also
+*Decimals 2 means theere will be two digits after the decimal places
+
+________________CONSTANTS______________
+*value cannot be changed
+*use keyowrd CONSTANTS
+*VALUE is mandatory
+
+  CONSTANTS const1 TYPE string VALUE 'Hello'.
+  CONSTANTS const1 TYPE i VALUE 1234.
+
+________________LITERALS______________
+
+1. Number Literals:
+
+    Definition: These are integers (positive or negative) used directly in the code.
+    Example: 123, -456, 7890.
+    Data Type: By default, number literals are interpreted as data type I (Integer). If the number exceeds the size of I (e.g., too large), ABAP uses P (Packed Decimal) for larger values without decimals.
+    Assignment Example:
+
+    DATA num TYPE I.
+    num = 123.  " Number literal
+
+If the value exceeds the range of I:
+
+DATA large_num TYPE p LENGTH 16 DECIMALS 0.
+large_num = 1234567890123456.  " Packed decimal, for large numbers
+
+2. Text Literals:
+
+    Definition: These are character strings enclosed in single quotes.
+    Example: 'Hello, world!', 'ABAP', '123'.
+    Data Type: They are of type C (Character), and the length of the text is derived from the number of characters inside the quotes (trailing spaces are ignored).
+    Assignment Example:
+
+    DATA text TYPE C LENGTH 10.
+    text = 'ABAP'.  " Text literal
+
+In this example, the text 'ABAP' will be stored in the variable text, and the length of text would be 4 characters (the trailing blanks are ignored).
+3. String Literals:
+
+    Definition: These are strings enclosed in backticks (`).
+    Example: `Hello, world!`, `ABAP`.
+    Data Type: String literals are of type STRING. These are typically used for longer or dynamic text content.
+    Assignment Example:
+
+DATA str TYPE STRING.
+str = `Hello, ABAP!`.  " String literal
+
+____________LOCAL TYPES____________
+Types is used to create custom datatypes which can be used again in different parts of the program.
+    * we can give different names to the types
+    * later on while defining a variable we can use that name
+
+    TYPES my_type1 TYPE p LENGTH 3 DECIMALS 2.
+    TYPES my_type2 TYPE i .*
+    TYPES my_type3 TYPE string.
+    TYPES my_type4 TYPE n length 10.
+
+    DATA my_variable TYPE my_type1.
+    my_variable = 23456.78.
+
+    out->write(   my_variable ).
+
+____________GLOBAL TYPES__________
+    these datatypes are globally declared and have predefined length etc.
+    it can be accessed anywher in the system
+    DATA airport TYPE /dmo/airport_id VALUE 'FRA'.            //here /dmo/airport_id is the global type thats already declared
+
+    out->write(   airport ).
+
+_____________RESETTING VARIABLES_____________
+*CLEAR can be used to reset the value of variables
+*It will be initialised to zero
+
+CLEAR my_var1.
+____________INLINE DECLARATION____________
+    *instead of explicitly declaring thevariable and then assign the value we can do this together by giving the variable name inn brackets 
+    *remember no spaces are allowed in between the keyword data or between the bracket and variables
+
+    
+  METHOD if_oo_adt_classrun~main.
+  DATA(my_var) ='Hello'.
+  DATA(my_var1) = 123.
+  out->write( my_var ).
+  out->write( my_var1 ).
+  ENDMETHOD.
+------->output
+Hello
+123          
+
+___________ARITHMETIC EXPRESSIONS___________
+
+1.Addition(+)
+2.Subtraction(-)
+3.Multiplication(*)
+4.Division(/)
+5.DIV  - for whole number division
+6.MOD  - for remainder after division
+7.sqrt()    square root
+8.ipow()    integer exponentiation
+
+****order of precedence****
+
+functions->multiplication/division->addition/subtraction
+
+if equal PRECEDENCE then FROM LEFT->RIGHT
+****there shhould be blank space between the operators otherwise syntax error
+            
+        METHOD if_oo_adt_classrun~main.
+              TYPES type1 TYPE i.
+              DATA result1 TYPE type1.
+              DATA result2 TYPE type1.
+              DATA result3 TYPE type1.
+              DATA result4 TYPE type1.
+              DATA result5 TYPE type1.
+              DATA result6 TYPE type1.
+              DATA result7 TYPE type1.
+              DATA result8 TYPE type1.
+              DATA result9 TYPE type1.
+            
+            
+              result1 = 90 - 10.            "put space between the operands
+              result2 = 90 + 10.
+              result3 = 5 * 6.
+              result4 = 50 / 2.
+              result5 = 61 MOD 3.
+              result6 = 40 DIV 2.
+              result7 = sqrt( 49 ).
+              result8 = ipow( base = 2 exp = 3 ).
+              result9 = ( 5 * 5 - 5 ) / ( 1 + 4 ).
+            
+              out->write( result1 ).
+              out->write( result2 ).
+              out->write( result3 ).
+              out->write( result4 ).
+              out->write( result5 ).
+              out->write( result6 ).
+              out->write( result7 ).
+              out->write( result8 ).
+              out->write( result9 ).
+            
+              ENDMETHOD.
+----->OUTPUT:
+
+80           
+100          
+30           
+25           
+1            
+20           
+7            
+8            
+4            
+
+
+______________FORMAT OPTIONS DATE _______________
+
+      METHOD if_oo_adt_classrun~main.
+      DATA date TYPE d VALUE '19870923'.
+      out->write( |{ date }| ).
+      out->write( |{ date DATE = ISO }| ).
+      out->write( |{ date DATE = USER }| ).
+      ENDMETHOD.
+
+
+------->OUTPUT
+19870923
+1987-09-23
+09/23/1987
+
+
+_____________FORMATTING NUMBER__________
+      METHOD if_oo_adt_classrun~main.
+      DATA my_number TYPE p LENGTH 3 DECIMALS 2 VALUE '-273.67'.
+      out->write( |{ my_number }| ).
+      out->write( |{ my_number NUMBER = USER }| ).
+      out->write( |{ my_number STYLE = SCIENTIFIC }| ).
+      out->write( |{ my_number SIGN = RIGHT }| ).
+    
+      ENDMETHOD.
+
+----------->OUTPUT
+
+-273.67
+-273.67
+-2.7367E+02
+273.67-
