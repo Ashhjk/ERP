@@ -930,4 +930,30 @@ ENDDO.
 
 *sy-index gets the current iteration number
 
-______________
+______________INTERNAL TABLES_________________
+*internal tables store the data of the same type
+*each data is stored as rows
+*each row hold a value
+*any number of data can be stored
+*by default the table will be with no data or zero rows
+*we can add data using APPEND
+
+DATA tablename TYPE TABLE OF <rowtype>
+APPEND 123 to table name
+
+=======>TABLE TYPES
+------->using TYPE OF statement
+eg:DATA my_table TYPE TABLE OF i.
+   APPEND 34 TO my_table.
+
+or we can decare the type generallly
+
+eg: TYPES table_type1 TYPE TABLE OF string.
+    DATA table1 TYPE table_type1.
+
+--------->GLOBAL TABLES
+*they have a global scope rather than the scope of tables inside the block of execution or method or class.
+*those tables present in ABAP dictionary
+
+eg:DATA flights TYPE /DMO/T_FLIGHT.
+
