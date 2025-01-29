@@ -957,3 +957,154 @@ eg: TYPES table_type1 TYPE TABLE OF string.
 
 eg:DATA flights TYPE /DMO/T_FLIGHT.
 
+________________ACCESSING DATA IN A TABLE USING LOOP__________
+
+=======>EXPLICIT DECLARATION
+              METHOD if_oo_adt_classrun~main.
+              DATA table1 TYPE TABLE OF i.
+              DATA numbers TYPE i.   //here we explicitly write to loop what
+            
+              APPEND 12 TO table1.
+              APPEND 45 TO table1.
+              APPEND 36 TO table1.
+            
+              LOOP AT table1 INTO numbers.
+              out->write( numbers ).
+              ENDLOOP.
+              ENDMETHOD.
+
+-------->OUTPUT
+12           
+45           
+36   
+
+=========>INLINE DECLARATION
+
+              METHOD if_oo_adt_classrun~main.
+              DATA table1 TYPE TABLE OF i.
+            
+              APPEND 12 TO table1.
+              APPEND 45 TO table1.
+              APPEND 36 TO table1.
+            
+              LOOP AT table1 INTO DATA(numbers).    //here we declare the loop element using DATA()
+              out->write( numbers ).
+              ENDLOOP.
+              ENDMETHOD.
+
+_________________PRINTING FIBONACCI USING INTERNAL TABLES_________________
+
+              METHOD if_oo_adt_classrun~main.
+              DATA table1 TYPE TABLE OF i.
+              CONSTANTS max_count TYPE i VALUE 20.
+            
+              DO max_count TIMES.
+              CASE sy-index.            //start with 1
+                WHEN 1.
+                  APPEND 1 TO table1.
+                WHEN 2.
+                  APPEND 2 TO table1.
+                WHEN OTHERS.
+                  APPEND table1[ sy-index - 1 ] + table1[ sy-index - 2 ] TO table1.
+              ENDCASE.
+              ENDDO.
+            
+              LOOP AT table1 INTO DATA(numbers).
+                 out->write( numbers ).
+              ENDLOOP.
+              ENDMETHOD.
+
+_________________________Storing the formatted data in another table of fibo series___________________________
+
+
+->we already have a table table 1 which stres the fibonacci nuumbers 
+->we create another table output which holds the data of type string to display the formatted output
+->we also set a counter to give indexing in the output
+->during the looping through each of the numbers in fibo series table1 we write the statement to append the table output also
+->now the table output has all the required data with correct formatting
+->now loop through the table output to see the result
+            METHOD if_oo_adt_classrun~main.
+              DATA table1 TYPE TABLE OF i.
+              CONSTANTS max_count TYPE i VALUE 20.
+            
+              DO max_count TIMES.
+              CASE sy-index.
+                WHEN 1.
+                  APPEND 1 TO table1.
+                WHEN 2.
+                  APPEND 2 TO table1.
+                WHEN OTHERS.
+                  APPEND table1[ sy-index - 1 ] + table1[ sy-index - 2 ] TO table1.
+              ENDCASE.
+              ENDDO.
+            
+              DATA output TYPE TABLE OF string.
+            
+              DATA(counter) = 0.
+              LOOP AT table1 INTO DATA(numbers).
+                 counter = counter + 1.
+                 APPEND |{ counter WIDTH = 4 } : { numbers WIDTH = 10 ALIGN = LEFT }| TO output.
+              ENDLOOP.
+            
+              LOOP AT output INTO DATA(num).
+                 out->write( num ).
+              ENDLOOP.
+            
+              ENDMETHOD.
+
+---------->OUTPUT
+
+
+1    : 1         
+2    : 2         
+3    : 3         
+4    : 5         
+5    : 8         
+6    : 13        
+7    : 21        
+8    : 34        
+9    : 55        
+10   : 89        
+11   : 144       
+12   : 233       
+13   : 377       
+14   : 610       
+15   : 987       
+16   : 1597      
+17   : 2584      
+18   : 4181      
+19   : 6765      
+20   : 10946     
+
+
+______________________CLASSES_________________
+
+==========>GLOBAL CLASSES
+    Stored centrally in the ABAP Repository.
+    Can be reused across different programs.
+*its the class we crate an write program it 
+*it has both definition and implementation part
+
+===========>LOCAL CLASS
+*accessed within the program only
+*to create local class inside global class we can go to windows-> editor->type lcl and then ctrl+space ->in the code remove the private class from the definition
+*now we can specify and write both instance and static methods, data ,etc inside the definitions
+
+*this is how local types will look like
+            *"* use this source file for the definition and implementation of
+            *"* local helper classes, interface definitions and type
+            *"* declarations
+            class lcl_ definition .
+            
+              public section.
+                DATA carrier_id TYPE /DMO/CARRIER_ID.
+                DATA connection_id TYPE /DMO/CONNECTION_ID.
+                CLASS-DATA conn_counter TYPE i.
+              protected section.
+              private section.
+            
+            endclass.
+            
+            class lcl_ implementation.
+            
+            endclass.
