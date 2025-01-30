@@ -1097,9 +1097,9 @@ ______________________CLASSES_________________
             class lcl_ definition .
             
               public section.
-                DATA carrier_id TYPE /DMO/CARRIER_ID.
-                DATA connection_id TYPE /DMO/CONNECTION_ID.
-                CLASS-DATA conn_counter TYPE i.
+                DATA carrier_id TYPE /DMO/CARRIER_ID.        //instance attribute
+                DATA connection_id TYPE /DMO/CONNECTION_ID.      //instance attribute
+                CLASS-DATA conn_counter TYPE i.      //static attribute
               protected section.
               private section.
             
@@ -1108,3 +1108,25 @@ ______________________CLASSES_________________
             class lcl_ implementation.
             
             endclass.
+
+
+------->if we create these instance and static attributes inside the local class then we can access them inside the global class of this.
+
+----->In the global class write like this to access them
+
+              METHOD if_oo_adt_classrun~main.
+              lcl_=>conn_counter = 123.
+              DATA connection TYPE REF TO lcl_.
+              connection = NEW #(   ).
+              connection->carrier_id = 23.
+            
+              out->write( lcl_=>conn_counter ).
+            
+              out->write( connection->carrier_id ).
+            
+              ENDMETHOD.
+
+---------->OUTPUT
+
+123          
+23
