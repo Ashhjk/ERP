@@ -1130,3 +1130,234 @@ ______________________CLASSES_________________
 
 123          
 23
+
+___________________DEFINING AND CALLING METHODS_________________
+in the above case we saw how can we define an attribute and call them. Similarly we can create methods in the local  class and call themin the global class.Methods are like functions.We can define the methods in the definitions section.
+
+CLASS <classname> DEFINITION
+  <public or privateor protected section>
+        METHODS <methodname>
+            IMPORTING <input1> TYPE <>
+                      <input2> TYPE <> DEFAULT <val>
+            EXPORTING <output1> TYPE <>
+                        ....
+            CHANGING <inout1> TYPE <type>
+                    ...
+            RETURNING VALUE (<result>) TYPE <type>
+            RAISING <exception1>
+                     ...
+ENDCLASS.
+
+----PARAMETERS AND EXCEPTIONS-----
+while writing the methods we can use parameters and exceptions
+1. IMPORTING PARAMETERS
+*they are those values passed from the caller of the method
+*values are accepted
+*any number of params possible
+*can be made optional
+*cannot modify
+
+2.EXPORTING PARAMS
+*results that are returned by a method
+*all params are optional
+
+3.CHANGING PARAMS
+*they arealso the params received from the caller but acan be chnaged.(importing para cannot be changed)
+*any no.of params possible
+*can be made optional
+*can modiify
+
+4.RETURNING PARAMS
+*they are like exporting params
+*used when we have only a single value to export
+*can be exported using RETURNING VALUE(<param>)
+
+5.RAISING
+*used to raise all possible exceptions
+
+--------IMPLEMENTATION of METHODS in LOCAL CLASS-------
+*suppose the attribute name specified in definition and the refernce variable in the global class has the same value then we have to use the self reference operator(->) to uniquely identify the attribute name.
+
+*if both name sre different then no problem
+
+--------USAGE OF METHODS--------
+sometimes we write the attriibutes in the local class and the method definitoon and implmentation also in the local class. WE dont actually awnt to expose the actuall logic behind a method to other. Its a way of encapsulation.So we just call the method in the global cass and assign the value there.
+
+----local class
+
+
+            class lcl_ definition.
+            
+              public section.
+            
+                DATA carrier_id TYPE /DMO/CARRIER_ID.
+                DATA connection_id TYPE /DMO/CONNECTION_ID.
+                CLASS-DATA conn_counter TYPE i.
+            
+                 METHODS set_attributes
+                    IMPORTING
+                    i_carrier_id TYPE /dmo/carrier_id OPTIONAL
+                    i_connection_id TYPE /dmo/connection_id.
+                 METHODS get_attributes
+                    EXPORTING
+                    e_carrier_id TYPE /DMO/CARRIER_ID
+                    e_connection_id TYPE /dmo/connection_id.
+            
+            
+              protected section.
+              private section.
+            
+            
+            endclass.
+            
+            class lcl_ implementation.
+            
+            METHOD set_attributes.
+            
+              carrier_id = i_carrier_id.
+              connection_id = i_connection_id.
+            ENDMETHOD.
+            
+            METHOD get_attributes.
+              e_carrier_id = carrier_id.
+              e_connection_id = connection_id.
+            ENDMETHOD.
+            
+            
+            endclass.
+---------global class
+
+            CLASS zcl_34_local_class7 DEFINITION
+              PUBLIC
+              FINAL
+              CREATE PUBLIC .
+            
+              PUBLIC SECTION.
+            
+                INTERFACES if_oo_adt_classrun .
+              PROTECTED SECTION.
+              PRIVATE SECTION.
+            ENDCLASS.
+            
+            
+            
+            CLASS zcl_34_local_class7 IMPLEMENTATION.
+                METHOD if_oo_adt_classrun~main.
+                DATA connection TYPE REF TO lcl_.
+            
+                   connection = NEW #( ).
+                   DATA: carrier_id TYPE /DMO/CARRIER_ID,
+                      connection_id TYPE /DMO/CONNECTION_ID.
+                   connection->set_attributes(
+                      EXPORTING
+                         i_carrier_id = 'SA'
+                         i_connection_id = '56').
+                   connection->get_attributes(
+                      IMPORTING
+                         e_carrier_id = carrier_id
+                         e_connection_id = connection_id ).
+            
+            
+                   out->write( connection ).
+            
+                ENDMETHOD.
+            ENDCLASS.
+
+---------OUTPUT
+
+->                            
+LCL_                                       
+CARRIER_ID    CONNECTION_ID    CONN_COUNTER
+SA            0056             0           
+
+**if  we give those attributes in the private section then we cant log them in the console.
+
+--------->To raise exceptions while using ivalid values for the attributes
+
+use raising..make necessary modifications in both local types and global class
+
+----LOCAL CLASS
+            
+            class lcl_ definition.
+            
+              public section.
+            
+                DATA carrier_id TYPE /DMO/CARRIER_ID.
+                DATA connection_id TYPE /DMO/CONNECTION_ID.
+                CLASS-DATA conn_counter TYPE i.
+            
+                 METHODS set_attributes
+                    IMPORTING
+                    i_carrier_id TYPE /dmo/carrier_id OPTIONAL
+                    i_connection_id TYPE /dmo/connection_id
+                    RAISING
+                      cx_abap_invalid_value.
+                 METHODS get_attributes
+                    EXPORTING
+                    e_carrier_id TYPE /DMO/CARRIER_ID
+                    e_connection_id TYPE /dmo/connection_id.
+            
+            
+              protected section.
+              private section.
+            
+            
+            endclass.
+            
+            class lcl_ implementation.
+            
+            METHOD set_attributes.
+                IF i_carrier_id IS INITIAL OR i_connection_id IS INITIAL.
+                  RAISE EXCEPTION TYPE cx_abap_invalid_value.
+                ENDIF.
+              carrier_id = i_carrier_id.
+              connection_id = i_connection_id.
+            ENDMETHOD.
+            
+            METHOD get_attributes.
+              e_carrier_id = carrier_id.
+              e_connection_id = connection_id.
+            ENDMETHOD.
+            
+            
+            endclass.
+
+----->GLOBAL CLASS
+            CLASS zcl_34_local_class7 DEFINITION
+              PUBLIC
+              FINAL
+              CREATE PUBLIC .
+            
+              PUBLIC SECTION.
+            
+                INTERFACES if_oo_adt_classrun .
+              PROTECTED SECTION.
+              PRIVATE SECTION.
+            ENDCLASS.
+            
+            
+            
+            CLASS zcl_34_local_class7 IMPLEMENTATION.
+                METHOD if_oo_adt_classrun~main.
+                DATA connection TYPE REF TO lcl_.
+            
+                   connection = NEW #( ).
+                   DATA: carrier_id TYPE /DMO/CARRIER_ID,
+                      connection_id TYPE /DMO/CONNECTION_ID.
+                   TRY.
+                   connection->set_attributes(
+                      EXPORTING
+                         i_carrier_id = '0'
+                         i_connection_id = '0').
+                   CATCH cx_abap_invalid_value.
+                   out->write( 'method call failed' ).
+                   ENDTRY.
+                   connection->get_attributes(
+                      IMPORTING
+                         e_carrier_id = carrier_id
+                         e_connection_id = connection_id ).
+            
+                   out->write( connection ).
+            
+                ENDMETHOD.
+            ENDCLASS.
