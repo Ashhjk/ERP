@@ -1361,3 +1361,29 @@ use raising..make necessary modifications in both local types and global class
             
                 ENDMETHOD.
             ENDCLASS.
+
+____________________USING ENCAPSULATION TO ENSURE CONSISTENCY_____________________
+Encapsulationmeansto hide the implementation level details..
+*we restrict the access of data or attrinbutes outside the class.
+*after using this we cannot directly set the values.Insted we have to use some methods to set them.
+
+
+to write local class type lcl then ctrl+space
+
+            class lcl_ definition .
+                    
+              public section.
+                 CLASS-DATA <public-attribute> TYPE <type>.
+                 CLASS-DATA <readonly_attribute> TYPE <type> READ-ONLY.
+                 
+              protected section.
+              private section.
+              CLASS-DATA <private_attribute> TYPE <type>.
+              
+            endclass. 
+
+*There are two ways to restrict the access to the attributes.
+*one is to keep it in public section and make it read only so that it can be only read outside the class.
+*or keep it in private or protected section so that they cannot be read or written outside the class.
+
+
